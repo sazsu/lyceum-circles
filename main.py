@@ -4,13 +4,14 @@ import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow
 from PyQt6.QtGui import QPainter, QColor
 from PyQt6.QtCore import QPoint
-from PyQt6 import uic
+
+from ui import Ui_MainWindow
 
 
-class Circles(QMainWindow):
+class Circles(QMainWindow, Ui_MainWindow):
 	def __init__(self):
 		super().__init__()
-		uic.loadUi('UI.ui', self)
+		self.setupUi(self)
 		self.do_paint = False
 		self.drawButton.clicked.connect(self.paint)
 
@@ -22,10 +23,16 @@ class Circles(QMainWindow):
 			for i in range(randint(3, 10)):
 				x, y = randint(0, width), randint(0, height)
 				radii = randint(10, 100)
+				color = QColor(
+					randint(0, 255),
+					randint(0, 255),
+					randint(0, 255),
+				)
 				self.draw_circle(
 					qp,
 					x, y,
-					radii
+					radii,
+					color
 				)
 			qp.end()
 		self.do_paint = False
@@ -35,8 +42,8 @@ class Circles(QMainWindow):
 		self.update()
 
 	@staticmethod
-	def draw_circle(qp: QPainter, x: int, y: int, radii: int):
-		qp.setBrush(QColor(254, 221, 0))
+	def draw_circle(qp: QPainter, x: int, y: int, radii: int, color: QColor):
+		qp.setBrush(color)
 		qp.drawEllipse(
 			QPoint(x, y),
 			radii,
